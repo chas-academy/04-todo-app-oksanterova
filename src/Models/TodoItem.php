@@ -18,11 +18,18 @@ class TodoItem extends Model
     // //     // Update a specific todo
     // // }
 
-    // public static function deleteTodo($todoId)
-    // {
-    //     // TODO: Implement me!
-    //     // Delete a specific todo
-    // }
+    public static function deleteTodo($todoId)
+    {
+        $query = <<<SQL
+        DELETE FROM todos WHERE id = :id;
+SQL;
+
+        static::$db->query($query);
+        static::$db->bind(':id', $todoId);
+        $success = static::$db->execute();
+
+        return $success;        
+    }
     
     // (Optional bonus methods below)
     // public static function toggleTodos($completed)
