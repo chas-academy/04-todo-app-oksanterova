@@ -19,11 +19,23 @@ SQL;
         return $result;        
     }
 
-    // // public static function updateTodo($todoId, $title, $completed = null)
-    // // {
-    // //     // TODO: Implement me!
-    // //     // Update a specific todo
-    // // }
+    public static function updateTodo($todoId, $title, $completed)
+    {
+        $query = <<<SQL
+        UPDATE todos
+        SET title = :title,
+        completed = :completed
+        WHERE id = :id;
+SQL;
+
+        static::$db->query($query);
+        static::$db->bind(':id', $todoId);
+        static::$db->bind(':title', $title);
+        static::$db->bind(':completed', $completed ? "true" : "false");
+        $result = static::$db->execute();
+
+        return $result;        
+    }
 
     public static function deleteTodo($todoId)
     {
