@@ -50,17 +50,30 @@ SQL;
         return $success;        
     }
     
-    // (Optional bonus methods below)
-    // public static function toggleTodos($completed)
-    // {
-    //     // TODO: Implement me!
-    //     // This is to toggle all todos either as completed or not completed
-    // }
+    public static function toggleTodos($completed)
+    {
+        $query = <<<SQL
+        UPDATE todos
+        SET completed = :completed
+SQL;
 
-    // public static function clearCompletedTodos()
-    // {
-    //     // TODO: Implement me!
-    //     // This is to delete all the completed todos from the database
-    // }
+        static::$db->query($query);
+        static::$db->bind(':completed', $completed ? "true" : "false");
+        $result = static::$db->execute();
+
+        return $result;        
+    }
+
+    public static function clearCompletedTodos()
+    {
+        $query = <<<SQL
+        DELETE FROM todos WHERE completed = "true";
+SQL;
+
+        static::$db->query($query);
+        $success = static::$db->execute();
+
+        return $success;        
+    }
 
 }
