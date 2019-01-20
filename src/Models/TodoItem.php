@@ -76,4 +76,16 @@ SQL;
         return $success;        
     }
 
+    public static function filter($completed)
+    {
+        $query = <<<SQL
+        SELECT * FROM todos WHERE completed = :completed;
+SQL;
+
+        static::$db->query($query);
+        static::$db->bind(':completed', $completed ? "true" : "false");
+        $todos = static::$db->resultset();
+
+        return $todos;
+    }
 }
